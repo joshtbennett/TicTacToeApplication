@@ -6,6 +6,27 @@
  * @author Andrew Vardy
  */
 
+
+/*
+    node:
+        depth
+        score
+        gameover
+        preboard[][]
+        postboard[][]
+        player
+*/
+
+/*
+    create root node using current board
+    recursively method to find all possible outcomes
+        once a leaf is reached, set the score and depth fields
+    bring scores and depths up from leaves to level 2(just below the root)
+    make the move with the highest (score - depth)
+
+*/
+
+
 package tictactoeapplication;
 /**
  * Realization of AI interface using smart strategy [NOT IMPLEMENTED].
