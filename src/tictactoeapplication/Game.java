@@ -210,7 +210,7 @@ public class Game {
      */
     public void endGame()
     {
-        System.exit(1);
+        while(true);
     }
     
     /**

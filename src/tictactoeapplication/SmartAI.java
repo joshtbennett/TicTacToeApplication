@@ -115,7 +115,7 @@ public class SmartAI implements AI {
        
         //check for xox diagonal block
         if(boardArray[0] == boardArray[8] && boardArray[4] != boardArray[8])
-            if(boardArray[0] != aipiece)
+            if(boardArray[0] != aipiece && boardArray[4] != 0 && boardArray[0] != 0)
                 for(int i = 0; i < 2; i++)
                 {
                     if(availableMoves[1][i*2] == true)
