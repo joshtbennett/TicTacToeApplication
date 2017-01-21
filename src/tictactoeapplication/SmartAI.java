@@ -30,23 +30,29 @@ public class SmartAI implements AI {
         aipiece = aiIsX?'X':'O';
     }
 
+    /**
+     * 
+     * @param board - the boards configuration before the ai's turn
+     * @return - move to be placed on the board 
+     */
     @Override
     public Move chooseMove(Board board) 
     {
-        
-        //0 = empty
-        //1 = x
-        //2 = o
-        //check row using i+1%3 and i+2%3
-        //check column using j+1%3 and j+2%3
+        //check row to block or win using i+1%3 and i+2%3
+        //check column to block or win using j+1%3 and j+2%3
         
         Move move = null;
+        
+        //win/block coordinates. initialized at -1
         int canWinRow = -1;
         int canWinCol = -1;
         int canBlockRow = -1;
         int canBlockCol = -1;
         
+        //array of the current board config
         char[] boardArray = board.boardGetter();
+        
+        //true if the location is empty, false if occupied
         boolean[][] availableMoves = new boolean[3][3];
         
         for(int i = 0; i < 3; i++)
@@ -65,10 +71,10 @@ public class SmartAI implements AI {
                 //find available spot
                     //check if the rest of the row or column is filled
                         //check if its filled by 2 of the same pieces(ai can win next move or player can win next move
-                            //if it is filled by 2 of the same, ai place piece in that row/column
 
                 if(availableMoves[i][j]==true)
                 {
+                    //check rows
                     if(availableMoves[(i+1)%3][j] == availableMoves[(i+2)%3][j] && availableMoves[(i+1)%3][j] == false)
                     {
                         if(boardArray[3*((i+1)%3)+j] == boardArray[3*((i+2)%3)+j])
@@ -85,6 +91,8 @@ public class SmartAI implements AI {
                             }
                         }
                     }
+                    
+                    //check columns
                     else if(availableMoves[i][(j+1)%3] == availableMoves[i][(j+2)%3] && availableMoves[i][(j+1)%3] == false)
                     {
                         if(boardArray[3*i+((j+1)%3)] == boardArray[3*i+((j+2)%3)])
@@ -105,15 +113,19 @@ public class SmartAI implements AI {
             }  
         }
         
+        //place piece to win
         if(canWinRow != -1)
             return new Move(canWinRow, canWinCol, aipiece);
+        
+        //if cant win, block
         if(canBlockRow != -1)
             return new Move(canBlockRow, canBlockCol, aipiece);
+        
         //if cant win or block go middle if free
         if(availableMoves[1][1] == true)
             return new Move(1,1,aipiece);
        
-        //check for xox diagonal block
+        //check for xox diagonal block(go to a side as to not create 2 winning situations for player)
         if(boardArray[0] == boardArray[8] && boardArray[4] != boardArray[8])
             if(boardArray[0] != aipiece && boardArray[4] != 0 && boardArray[0] != 0)
                 for(int i = 0; i < 2; i++)
@@ -139,7 +151,7 @@ public class SmartAI implements AI {
         for(int i = 0; i < 2; i++)
         {
             if(availableMoves[1][i*2] == true)
-                return new Move(1,(i*2),aipiece);
+                move = new Move(1,(i*2),aipiece);
             else if(availableMoves[i*2][1] == true)
                 move = new Move((i*2),1,aipiece);
         }
